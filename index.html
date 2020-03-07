@@ -20,22 +20,64 @@
   </head>
   <body>
     <div id="map"></div>
+
     <script>
 
       var map;
+      var features = [];
+
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
           zoom: 12,
           center: {lat: 40.705150, lng: -74.0085300}
         });
+        
+      }      
 
-        // NOTE: This uses cross-domain XHR, and may not work on older browsers.
-        map.data.loadGeoJson(
-            'https://greenimpulse.org/cgi-bin/bearing.py');
+      function createElements(elements) {
+        // Assuming you get an array of objects.
+        bearings = JSON.parse(elements.srcElement.response);
+
+        for (var i = 0; i < features.length; i++)
+          map.data.remove(features[i]);
+
+        features = map.data.addGeoJson(bearings);
+
       }
+
+      function getJSON(url) {
+        var request = new XMLHttpRequest();
+
+        request.onload = createElements;
+        request.open("get", url + "?" + (new Date()).getTime(), true);
+        request.send();
+
+      }
+      function fromServer(i){
+    
+        return new Promise((resolve, reject) => {
+          setTimeout(function(){
+            resolve(true)
+          }, 2000)
+        })
+
+      }
+
+      async function  forLoopGood(){
+        while (true) {
+   		    await fromServer(1);
+
+          // Load the GeoJSON manually (works cross-origin since google sets the required HTTP headers)
+          getJSON('https://greenimpulse.org/cgi-bin/bearing.py'); 
+       }
+      }
+
+      forLoopGood();
+
+
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXifpLCniUxhcSUo_wWW7ZFS_x01v2N2Q&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?callback=initMap">
     </script>
   </body>
 </html>
