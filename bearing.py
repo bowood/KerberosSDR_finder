@@ -8,8 +8,14 @@ from geopy.distance import VincentyDistance
 
 # given: lat1, lon1, b = bearing in degrees, d = distance in kilometers
 
+# FIDI Manhattan
 origin = geopy.Point(40.705150, -74.0085300)
 orig_bearing = 139.3
+
+# Crown Heights
+#origin = geopy.Point(40.673512, -73.958879)
+#orig_bearing = 194.8
+
 
 with open('/home2/greenim9/data/data.json') as data_file:
     data_loaded = json.load(data_file)
