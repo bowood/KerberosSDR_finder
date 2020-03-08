@@ -3,11 +3,14 @@
 import requests
 import json
 import xmltodict
+from datetime import datetime
 
 url = "https://greenimpulse.org/cgi-bin/receive.py"
 
 with open('/ram/DOA_value.html') as fd:
     data = xmltodict.parse(fd.read())
+
+data['DATA']['timestamp'] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
 headers = {
   'content-type': 'application/json',
