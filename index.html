@@ -124,7 +124,7 @@
 
       async function bearingLoop(){
         while (true) {
-   		    await waitDelay(2000);
+   		    await waitDelay(1000);
 
           // Load the GeoJSON manually (works cross-origin since google sets the required HTTP headers)
           getJSONBearing('https://greenimpulse.org/cgi-bin/bearing.py'); 
