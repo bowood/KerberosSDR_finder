@@ -14,7 +14,9 @@ orig_bearing = 139.3
 with open('/home2/greenim9/data/data.json') as data_file:
     data_loaded = json.load(data_file)
 
-destination = VincentyDistance(kilometers=float(data_loaded['DATA']['PWR'])).destination(
+stroke_weight = float(data_loaded['DATA']['PWR'])
+
+destination = VincentyDistance(kilometers=15).destination(
     origin, 
     orig_bearing+float(data_loaded['DATA']['DOA'])
   )
@@ -31,10 +33,10 @@ print json.dumps({
   "type": "FeatureCollection",
   "features": [
     {
-      "id": 12345,
       "type": "Feature",
       "properties": {
-        "prop0": "Bearing"
+        "prop0": "Bearing",
+        "strokeWeight": stroke_weight
       },
       "geometry": {
         "type": "LineString",

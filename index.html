@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Data Layer: Simple</title>
+    <title>Kerberos SDR on 446.100 Mhz</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <style>
@@ -42,6 +42,15 @@
           map.data.remove(features[i]);
 
         features = map.data.addGeoJson(bearings);
+
+        map.data.setStyle(function(feature) {
+        var strokeWeight = feature.getProperty('strokeWeight');
+        return {
+          //strokeColor: strokeColor,
+          strokeWeight: strokeWeight
+        };
+
+      });
 
       }
 
