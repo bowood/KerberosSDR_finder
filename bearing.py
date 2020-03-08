@@ -14,7 +14,7 @@ orig_bearing = 139.3
 
 # Crown Heights
 #origin = geopy.Point(40.673512, -73.958879)
-#orig_bearing = 194.8
+#orig_bearing = 195
 
 
 with open('/home2/greenim9/data/data.json') as data_file:
