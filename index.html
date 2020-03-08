@@ -31,10 +31,16 @@
           zoom: 12,
           center: {lat: 40.705150, lng: -74.0085300}
         });
-        
+
+        var centerControlDiv = document.createElement('div');
+        var centerControl = new CenterControl(centerControlDiv, map);
+
+        centerControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(centerControlDiv);
+
       }      
 
-      function createElements(elements) {
+      function displayBearing(elements) {
         // Assuming you get an array of objects.
         bearings = JSON.parse(elements.srcElement.response);
 
@@ -54,34 +60,78 @@
 
       }
 
-      function getJSON(url) {
+      function getJSONBearing(url) {
         var request = new XMLHttpRequest();
 
-        request.onload = createElements;
+        request.onload = displayBearing;
         request.open("get", url + "?" + (new Date()).getTime(), true);
         request.send();
 
       }
-      function fromServer(i){
+      function waitDelay(i){
     
         return new Promise((resolve, reject) => {
           setTimeout(function(){
             resolve(true)
-          }, 2000)
+          }, i)
         })
 
       }
 
-      async function  forLoopGood(){
+      function CenterControl(controlDiv, map) {
+
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '3px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Recent History';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlSave= document.createElement('div');
+        controlSave.style.color = 'rgb(25,25,25)';
+        controlSave.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlSave.style.fontSize = '16px';
+        controlSave.style.lineHeight = '38px';
+        controlSave.style.paddingLeft = '5px';
+        controlSave.style.paddingRight = '5px';
+        controlSave.innerHTML = '<button>Save Event</button>';
+        controlUI.appendChild(controlSave);
+
+        // Set CSS for the control interior.
+        var controlText2 = document.createElement('div');
+        controlText2.style.color = 'rgb(25,25,25)';
+        controlText2.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText2.style.fontSize = '16px';
+        controlText2.style.lineHeight = '38px';
+        controlText2.style.paddingLeft = '5px';
+        controlText2.style.paddingRight = '5px';
+        controlText2.innerHTML = '<p>Item 2</p>';
+        controlUI.appendChild(controlText2);
+
+        // Setup the click event listeners: simply set the map to Chicago.
+        controlText2.addEventListener('click', function() {
+          controlText2.innerHTML = '<p>Item 4</p>';
+        });
+
+      }
+
+
+      async function bearingLoop(){
         while (true) {
-   		    await fromServer(1);
+   		    await waitDelay(2000);
 
           // Load the GeoJSON manually (works cross-origin since google sets the required HTTP headers)
-          getJSON('https://greenimpulse.org/cgi-bin/bearing.py'); 
+          getJSONBearing('https://greenimpulse.org/cgi-bin/bearing.py'); 
        }
       }
 
-      forLoopGood();
+      bearingLoop();
 
 
     </script>
